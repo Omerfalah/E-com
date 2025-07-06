@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Brown & White Furniture Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- Google Fonts for modern typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <!-- React and ReactDOM via CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: #fafafa;
+      color: #2c2c2c;
+      font-family: 'Inter', 'Montserrat', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    
+    html, input, select, textarea, button {
+      font-family: inherit;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      padding: 1.5rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: left;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    
+    .header .company {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.7rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin: 0 2rem 0 0;
+      background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: normal;
+      text-overflow: unset;
+      overflow: visible;
+      line-height: 1.1;
+      word-break: break-word;
+    }
+    .header .nav {
+      flex: 2;
+      justify-content: flex-end;
+      margin: 0;
+    }
+    
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .nav a {
+      color: #fff;
+      font-weight: 500;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .nav a.active, .nav a:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease;
+      position: relative;
+      border: 1px solid rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2c2c2c 0%, #4a4a4a 100%);
+    }
+    
+    .product-card:hover {
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+      transform: translateY(-8px);
+      z-index: 2;
+    }
+    
+    .product-card img {
+      width: 200px;
+      height: 200px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      object-fit: cover;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 2px solid #e0e0e0;
+      background: #f8f9fa;
+    }
+    
+    .product-card:hover img {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      border-color: #2c2c2c;
+    }
+    
+    .product-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      text-align: center;
+      color: #2c2c2c;
+    }
+    
+    .product-card .price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #2c2c2c;
+      margin: 0.5rem 0;
+    }
+    
+    .product-card .details {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .product-card button {
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+    
+    .product-card button:hover {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transform: translateY(-2px);
+    }
+    
+    .product-card button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .filters {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      align-items: center;
+      border: 1px solid rgba(0,0,0,0.05);
+      justify-content: center;
+    }
+    
+    .filters label {
+      font-weight: 600;
+      margin-right: 0.5rem;
+      font-size: 0.9rem;
+      color: #2c2c2c;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .filters select, .filters input[type='text'] {
+      padding: 0.7rem 1.3rem;
+      border-radius: 999px;
+      border: 2px solid #e0e0e0;
+      font-size: 1rem;
+      background: #fafafa;
+      margin-right: 1rem;
+      transition: all 0.3s cubic-bezier(.4,0,.2,1);
+      min-width: 120px;
+      box-shadow: 0 2px 8px rgba(44,44,44,0.04);
+      outline: none;
+    }
+    
+    .filters select:focus, .filters input[type='text']:focus {
+      border-color: #b48a5a;
+      box-shadow: 0 0 0 3px rgba(180,138,90,0.12);
+      background: #fff;
+    }
+    
+    .filters input[type='checkbox'] {
+      accent-color: #2c2c2c;
+      margin-right: 0.5rem;
+      transform: scale(1.2);
+    }
+    
+    .filters .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      margin-right: 0.5rem;
+    }
+    
+    .filters .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .filters .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #e0e0e0;
+      border-radius: 24px;
+      transition: background 0.3s;
+    }
+    
+    .filters .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(44,44,44,0.08);
+      transition: transform 0.3s;
+    }
+    
+    .filters .toggle-switch input:checked + .slider {
+      background: linear-gradient(90deg, #b48a5a 0%, #2c2c2c 100%);
+    }
+    
+    .filters .toggle-switch input:checked + .slider:before {
+      transform: translateX(20px);
+      background: #fffbe7;
+    }
+    
+    .cart-btn {
+      position: relative;
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .cart-btn:hover {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #ff4757;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      font-weight: 700;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .stepper {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin: 3rem 0 2rem 0;
+      align-items: center;
+      position: relative;
+      padding: 0 2rem;
+    }
+    
+    .stepper::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 3rem;
+      right: 3rem;
+      height: 3px;
+      background: linear-gradient(90deg, #e0e0e0 0%, #d0d0d0 100%);
+      z-index: 0;
+      border-radius: 2px;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: 600;
+      color: #999;
+      z-index: 1;
+      min-width: 80px;
+      transition: all 0.3s ease;
+    }
+    
+    .step.active {
+      color: #2c2c2c;
+    }
+    
+    .step.done {
+      color: #2c2c2c;
+    }
+    
+    .step-circle {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: 3px solid #fff;
+      transition: all 0.3s ease;
+      color: #999;
+    }
+    
+    .step.active .step-circle {
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      border-color: #2c2c2c;
+      box-shadow: 0 6px 20px rgba(44,44,44,0.3);
+    }
+    
+    .step.done .step-circle {
+      background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+      color: #fff;
+      border-color: #27ae60;
+    }
+    
+    .cart-list {
+      margin: 2rem 0;
+      border-radius: 16px;
+      background: #fff;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .cart-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+    
+    .cart-list button {
+      background: #ff4757;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .cart-list button:hover {
+      background: #e74c3c;
+      transform: translateY(-1px);
+    }
+    
+    .form-section {
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 16px;
+      margin: 2rem auto;
+      max-width: 500px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .form-section h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #2c2c2c;
+      text-align: center;
+    }
+    
+    .form-section input, .form-section select, .form-section textarea {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      margin: 0.5rem 0 1rem 0;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fff;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+    
+    .form-section input:focus, .form-section select:focus, .form-section textarea:focus {
+      border-color: #2c2c2c;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(44,44,44,0.1);
+    }
+    
+    .form-section button {
+      width: 100%;
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 1rem 0;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    
+    .form-section button:hover {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transform: translateY(-2px);
+    }
+    
+    .form-section button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .thankyou {
+      text-align: center;
+      margin: 3rem 0;
+      color: #2c2c2c;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+    
+    .thankyou h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .thankyou button {
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 1rem 2rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .thankyou button:hover {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transform: translateY(-2px);
+    }
+    
+    .footer {
+      background: linear-gradient(135deg, #232323 0%, #3a3a3a 100%);
+      color: #fff;
+      padding: 0;
+      margin-top: 4rem;
+      width: 100%;
+      box-shadow: 0 -2px 24px rgba(0,0,0,0.08);
+      border-top: 2px solid #222;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+      gap: 2rem;
+    }
+    .footer-col {
+      flex: 1 1 180px;
+      min-width: 180px;
+      margin-bottom: 1.5rem;
+    }
+    .footer-col.company h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      margin: 0 0 0.5rem 0;
+      background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+    .footer-col h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: #fffbe7;
+      letter-spacing: 0.5px;
+    }
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-col ul li {
+      margin-bottom: 0.5rem;
+      color: #e0e0e0;
+      font-size: 0.98rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .footer-col ul li i {
+      min-width: 18px;
+      text-align: center;
+      color: #b48a5a;
+    }
+    .footer-col.links ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+    }
+    .footer-col.links ul li a:hover {
+      color: #b48a5a;
+      border-bottom: 1px solid #b48a5a;
+    }
+    .footer-social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .footer-social-icons a {
+      color: #fff;
+      font-size: 1.4rem;
+      background: #232323;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(44,44,44,0.08);
+      border: 1.5px solid #444;
+      text-decoration: none;
+    }
+    .footer-social-icons a:hover {
+      background: #b48a5a;
+      color: #fff;
+      border-color: #b48a5a;
+    }
+    .footer-bottom {
+      text-align: center;
+      color: #e0e0e0;
+      font-size: 0.98rem;
+      padding: 1rem 0 0.5rem 0;
+      border-top: 1px solid #333;
+      background: transparent;
+      letter-spacing: 0.5px;
+    }
+    @media (max-width: 900px) {
+      .footer-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        padding: 2rem 1rem 1rem 1rem;
+      }
+      .footer-col {
+        margin-bottom: 1.2rem;
+      }
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      color: #2c2c2c;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+    
+    .btn-group button {
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-group button:hover {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transform: translateY(-2px);
+    }
+    
+    .btn-group button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+    
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+    
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .modal-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2c2c2c;
+      margin: 0;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-close:hover {
+      background: #f0f0f0;
+      color: #2c2c2c;
+    }
+    
+    .modal-image {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    .modal-price {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #2c2c2c;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .option-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .option-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #2c2c2c;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .option-buttons {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    
+    .option-btn {
+      padding: 0.75rem 1.25rem;
+      border: 2px solid #e0e0e0;
+      background: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #666;
+      min-width: 80px;
+      text-align: center;
+    }
+    
+    .option-btn:hover {
+      border-color: #2c2c2c;
+      color: #2c2c2c;
+      transform: translateY(-1px);
+    }
+    
+    .option-btn.selected {
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      border-color: #2c2c2c;
+      box-shadow: 0 4px 12px rgba(44, 44, 44, 0.2);
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .modal-actions button {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .modal-actions .cancel-btn {
+      background: #f0f0f0;
+      color: #666;
+    }
+    
+    .modal-actions .cancel-btn:hover {
+      background: #e0e0e0;
+      color: #2c2c2c;
+    }
+    
+    .modal-actions .add-btn {
+      background: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 100%);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .modal-actions .add-btn:hover {
+      background: linear-gradient(135deg, #4a4a4a 0%, #2c2c2c 100%);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      transform: translateY(-2px);
+    }
+    
+    .modal-actions .add-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    @media (max-width: 768px) {
+      .products { 
+        grid-template-columns: 1fr; 
+        gap: 1.5rem;
+      }
+      .filters { 
+        flex-direction: column; 
+        gap: 1rem;
+      }
+      .nav { 
+        flex-direction: column; 
+        gap: 0.5rem; 
+      }
+      .container { 
+        padding: 1rem; 
+      }
+      .stepper {
+        gap: 1.5rem;
+        padding: 0 1rem;
+      }
+      .form-section {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      .header-inner {
+        max-width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .header h1 {
+        font-size: 1.5rem;
+        margin: 0 0 1rem 0;
+        text-align: center;
+      }
+    }
+    .hero-section {
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      min-height: 540px;
+      max-height: 75vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+    }
+    .hero-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1500&q=80') center center/cover no-repeat;
+      filter: brightness(0.55) blur(0.5px);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      background: rgba(44,44,44,0.32);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    }
+    .hero-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.7rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-content p {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      color: #fffde7;
+    }
+    .hero-btn {
+      background: linear-gradient(135deg, #b48a5a 0%, #2c2c2c 100%);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 1rem 2.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 4px 16px rgba(44,44,44,0.18);
+      letter-spacing: 0.5px;
+      outline: none;
+      margin-top: 0.5rem;
+    }
+    .hero-btn:hover {
+      background: linear-gradient(135deg, #2c2c2c 0%, #b48a5a 100%);
+      box-shadow: 0 8px 32px rgba(44,44,44,0.22);
+      transform: translateY(-2px) scale(1.04);
+    }
+    @media (max-width: 900px) {
+      .hero-section {
+        min-height: 320px;
+        max-height: 55vh;
+      }
+      .hero-content h2 {
+        font-size: 2rem;
+      }
+      .hero-content p {
+        font-size: 1.05rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .hero-section {
+        min-height: 180px;
+        max-height: 35vh;
+        margin-bottom: 1.2rem;
+      }
+      .hero-content {
+        padding: 1.2rem 0.5rem;
+      }
+      .hero-content h2 {
+        font-size: 1.2rem;
+      }
+      .hero-content p {
+        font-size: 0.95rem;
+      }
+      .hero-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+      }
+    }
+    .sales-banner {
+      width: 100%;
+      background: linear-gradient(90deg, #ffe0b2 0%, #fffbe7 100%);
+      color: #2c2c2c;
+      font-size: 1.15rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 1rem 0.5rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 12px rgba(180,138,90,0.08);
+      border-bottom: 2px solid #b48a5a;
+      margin-bottom: 0;
+      z-index: 10;
+    }
+    .sales-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff9800 0%, #b48a5a 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border-radius: 999px;
+      padding: 0.35em 1.1em;
+      margin-right: 1em;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(180,138,90,0.10);
+      vertical-align: middle;
+    }
+    .product-sale-badge {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: linear-gradient(135deg, #ff9800 0%, #b48a5a 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border-radius: 999px;
+      padding: 0.35em 1.1em;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(180,138,90,0.10);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .sale-price {
+      color: #ff9800;
+      font-weight: 800;
+      font-size: 1.5rem;
+      margin-right: 0.7em;
+    }
+    .orig-price {
+      color: #aaa;
+      font-size: 1.1rem;
+      text-decoration: line-through;
+      font-weight: 500;
+      margin-left: 0.2em;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+
+const PRODUCTS = [
+  {
+    id: 1,
+    name: "Modern Sofa",
+    category: "Sofa",
+    color: "Green",
+    material: "Leather",
+    price: 799,
+    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80",
+    availableColors: ["Green", "Brown", "Black", "Gray"],
+    availableMaterials: ["Leather", "Fabric", "Velvet"],
+    sale: 0.3 // 30% off
+  },
+  {
+    id: 2,
+    name: "Classic Armchair",
+    category: "Chair",
+    color: "White",
+    material: "Fabric",
+    price: 299,
+    image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=400&q=80",
+    availableColors: ["White", "Beige", "Gray"],
+    availableMaterials: ["Fabric", "Leather", "Linen"]
+  },
+  {
+    id: 3,
+    name: "Wooden Dining Table",
+    category: "Table",
+    color: "Brown",
+    material: "Wood",
+    price: 599,
+    image: "https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&w=400&q=80",
+    availableColors: ["Brown", "Oak", "Walnut"],
+    availableMaterials: ["Wood", "MDF", "Bamboo"]
+  },
+  {
+    id: 4,
+    name: "Minimalist Bed Frame",
+    category: "Bed",
+    color: "White",
+    material: "Wood",
+    price: 499,
+    image: "https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=400&q=80",
+    availableColors: ["White", "Black", "Gray"],
+    availableMaterials: ["Wood", "Metal", "Upholstered"]
+  },
+  {
+    id: 5,
+    name: "Coffee Table",
+    category: "Table",
+    color: "Brown",
+    material: "Wood",
+    price: 199,
+    image: "./coffeetableround_1_.jpg",
+    availableColors: ["Brown", "Oak", "Walnut"],
+    availableMaterials: ["Wood", "Glass", "Metal"],
+    sale: 0.15 // 15% off
+  },
+  {
+    id: 6,
+    name: "Office Chair",
+    category: "Chair",
+    color: "Black",
+    material: "Leather",
+    price: 399,
+    image: "./office chair.jpg",
+    availableColors: ["Brown", "Black", "Gray"],
+    availableMaterials: ["Leather", "Mesh", "Fabric"],
+    sale: 0.2 // 20% off
+  },
+  {
+    id: 7,
+    name: "Bookshelf",
+    category: "Shelf",
+    color: "Brown",
+    material: "Wood",
+    price: 249,
+    image: "./bookshelf.jpg.webp",
+    availableColors: ["Brown", "Oak", "White"],
+    availableMaterials: ["Wood", "MDF", "Metal"],
+    sale: 0.1 // 10% off
+  },
+  {
+    id: 8,
+    name: "Nightstand",
+    category: "Table",
+    color: "Brown",
+    material: "Wood",
+    price: 129,
+    image: "./nightstand.jpg",
+    availableColors: ["White", "Brown", "Black"],
+    availableMaterials: ["Wood", "MDF", "Metal"]
+  }
+];
+
+const CATEGORIES = ["All", ...Array.from(new Set(PRODUCTS.map(p => p.category)))];
+const COLORS = ["All", ...Array.from(new Set(PRODUCTS.map(p => p.color)))];
+const MATERIALS = ["All", ...Array.from(new Set(PRODUCTS.map(p => p.material)))];
+
+function Stepper({ step }) {
+  const steps = [
+    "Browse",
+    "Cart",
+    "Info",
+    "Payment",
+    "Confirmation",
+    "Survey"
+  ];
+  return (
+    <div className="stepper">
+      {steps.map((label, idx) => (
+        <div
+          key={label}
+          className={
+            "step" +
+            (step === idx ? " active" : "") +
+            (step > idx ? " done" : "")
+          }
+        >
+          <div className="step-circle">{idx + 1}</div>
+          <div>{label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Filters({ filters, setFilters }) {
+  return (
+    <div className="filters">
+      <label>
+        Category:
+        <select
+          value={filters.category}
+          onChange={e => setFilters(f => ({ ...f, category: e.target.value }))}
+        >
+          {CATEGORIES.map(c => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Color:
+        <select
+          value={filters.color}
+          onChange={e => setFilters(f => ({ ...f, color: e.target.value }))}
+        >
+          {COLORS.map(c => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Material:
+        <select
+          value={filters.material}
+          onChange={e => setFilters(f => ({ ...f, material: e.target.value }))}
+        >
+          {MATERIALS.map(m => (
+            <option key={m}>{m}</option>
+          ))}
+        </select>
+      </label>
+      <label style={{marginRight:0}}>
+        <span className="toggle-switch">
+          <input
+            type="checkbox"
+            checked={filters.priceUnder400}
+            onChange={e => setFilters(f => ({ ...f, priceUnder400: e.target.checked }))}
+          />
+          <span className="slider"></span>
+        </span>
+        Under $400
+      </label>
+      <input
+        type="text"
+        placeholder="Search name..."
+        value={filters.search}
+        onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
+      />
+    </div>
+  );
+}
+
+function ProductList({ products, onShowModal }) {
+  return (
+    <div className="products">
+      {products.length === 0 && (
+        <div style={{ 
+          textAlign: 'center', 
+          gridColumn: '1 / -1', 
+          padding: '3rem', 
+          color: '#666',
+          fontSize: '1.1rem'
+        }}>
+          No products found matching your criteria.
+        </div>
+      )}
+      {products.map(product => {
+        const isOnSale = !!product.sale;
+        const salePrice = isOnSale ? (product.price * (1 - product.sale)).toFixed(2) : null;
+        return (
+          <div className="product-card" key={product.id}>
+            {isOnSale && (
+              <span className="product-sale-badge">{Math.round(product.sale * 100)}% OFF</span>
+            )}
+            <img src={product.image} alt={product.name}/>
+            <h3>{product.name}</h3>
+            <div className="price">
+              {isOnSale ? (
+                <>
+                  <span className="sale-price">${salePrice}</span>
+                  <span className="orig-price">${product.price}</span>
+                </>
+              ) : (
+                <>${product.price}</>
+              )}
+            </div>
+            <div className="details">
+              {product.category} &middot; {product.color} &middot; {product.material}
+            </div>
+            <button onClick={() => onShowModal(product)}>
+              <i className="fa fa-cart-plus"></i> Add to Cart
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ProductModal({ product, isOpen, onClose, onAddToCart }) {
+  const [selectedColor, setSelectedColor] = React.useState(product?.color || "");
+  const [selectedMaterial, setSelectedMaterial] = React.useState(product?.material || "");
+
+  React.useEffect(() => {
+    if (product) {
+      setSelectedColor(product.color);
+      setSelectedMaterial(product.material);
+    }
+  }, [product]);
+
+  if (!isOpen || !product) return null;
+
+  const isOnSale = !!product.sale;
+  const salePrice = isOnSale ? (product.price * (1 - product.sale)).toFixed(2) : null;
+
+  const handleAddToCart = () => {
+    const productWithOptions = {
+      ...product,
+      color: selectedColor,
+      material: selectedMaterial,
+      displayName: `${product.name} (${selectedColor} ${selectedMaterial})`,
+      finalPrice: isOnSale ? parseFloat(salePrice) : product.price,
+      isOnSale,
+      salePrice: isOnSale ? parseFloat(salePrice) : undefined
+    };
+    onAddToCart(productWithOptions);
+    onClose();
+  };
+
+  const canAddToCart = selectedColor && selectedMaterial;
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3>{product.name}</h3>
+          <button className="modal-close" onClick={onClose}>
+            <i className="fa fa-times"></i>
+          </button>
+        </div>
+        {isOnSale && (
+          <span className="product-sale-badge" style={{top: 12, left: 12}}>{Math.round(product.sale * 100)}% OFF</span>
+        )}
+        <img src={product.image} alt={product.name} className="modal-image" />
+        <div className="modal-price">
+          {isOnSale ? (
+            <>
+              <span className="sale-price">${salePrice}</span>
+              <span className="orig-price">${product.price}</span>
+            </>
+          ) : (
+            <>${product.price}</>
+          )}
+        </div>
+        <div className="option-group">
+          <label>Color</label>
+          <div className="option-buttons">
+            {product.availableColors.map(color => (
+              <button
+                key={color}
+                className={`option-btn ${selectedColor === color ? 'selected' : ''}`}
+                onClick={() => setSelectedColor(color)}
+              >
+                {color}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="option-group">
+          <label>Material</label>
+          <div className="option-buttons">
+            {product.availableMaterials.map(material => (
+              <button
+                key={material}
+                className={`option-btn ${selectedMaterial === material ? 'selected' : ''}`}
+                onClick={() => setSelectedMaterial(material)}
+              >
+                {material}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="modal-actions">
+          <button className="cancel-btn" onClick={onClose}>
+            Cancel
+          </button>
+          <button 
+            className="add-btn" 
+            onClick={handleAddToCart}
+            disabled={!canAddToCart}
+          >
+            <i className="fa fa-cart-plus"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Cart({ cart, onRemove, onChangeQty }) {
+  const total = cart.reduce((sum, item) => sum + (item.finalPrice ?? item.salePrice ?? item.price) * item.qty, 0);
+  return (
+    <div>
+      <ul className="cart-list">
+        {cart.length === 0 && <li>Your cart is empty.</li>}
+        {cart.map(item => (
+          <li key={`${item.id}-${item.color}-${item.material}`}>
+            <span>
+              <b>{item.displayName || item.name}</b> (
+              {item.isOnSale ? (
+                <>
+                  <span className="sale-price">${(item.finalPrice ?? item.salePrice).toFixed(2)}</span>
+                  <span className="orig-price">${item.price}</span>
+                </>
+              ) : (
+                <>${item.price}</>
+              )}
+              ) x
+              <input
+                type="number"
+                min="1"
+                value={item.qty}
+                style={{ width: 40, margin: "0 0.5rem" }}
+                onChange={e => onChangeQty(`${item.id}-${item.color}-${item.material}`, +e.target.value)}
+              />
+            </span>
+            <span>
+              ${((item.finalPrice ?? item.salePrice ?? item.price) * item.qty).toFixed(2)}
+              <button onClick={() => onRemove(`${item.id}-${item.color}-${item.material}`)}>
+                <i className="fa fa-trash"></i>
+              </button>
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div style={{ textAlign: "right", fontWeight: 700, fontSize: "1.15rem" }}>
+        Total: ${total.toFixed(2)}
+      </div>
+    </div>
+  );
+}
+
+function InfoForm({ onNext }) {
+  const [info, setInfo] = React.useState({ name: "", address: "", email: "" });
+  return (
+    <form className="form-section" onSubmit={e => { e.preventDefault(); onNext(info); }}>
+      <h3>Enter Your Information</h3>
+      <input required placeholder="Full Name" value={info.name} onChange={e => setInfo(i => ({ ...i, name: e.target.value }))}/>
+      <input required placeholder="Address" value={info.address} onChange={e => setInfo(i => ({ ...i, address: e.target.value }))}/>
+      <input required type="email" placeholder="Email" value={info.email} onChange={e => setInfo(i => ({ ...i, email: e.target.value }))}/>
+      <button type="submit">Continue to Payment</button>
+    </form>
+  );
+}
+
+function PaymentForm({ onNext }) {
+  const [pay, setPay] = React.useState({ card: "", exp: "", cvc: "" });
+  return (
+    <form className="form-section" onSubmit={e => { e.preventDefault(); onNext(pay); }}>
+      <h3>Payment Information</h3>
+      <input required placeholder="Card Number" value={pay.card} onChange={e => setPay(p => ({ ...p, card: e.target.value }))}/>
+      <input required placeholder="Expiry (MM/YY)" value={pay.exp} onChange={e => setPay(p => ({ ...p, exp: e.target.value }))}/>
+      <input required placeholder="CVC" value={pay.cvc} onChange={e => setPay(p => ({ ...p, cvc: e.target.value }))}/>
+      <button type="submit">Place Order</button>
+    </form>
+  );
+}
+
+function ThankYou({ onNext }) {
+  return (
+    <div className="thankyou">
+      <h2>Thank you for your purchase!</h2>
+      <p>Your order has been placed. We hope you enjoy your new furniture.</p>
+      <p style={{marginTop: '2rem', fontSize: '1.1rem', color: '#444'}}>Would you like to leave a review of your experience?</p>
+      <button style={{marginTop: "1.5rem"}} onClick={onNext}>Leave Feedback</button>
+    </div>
+  );
+}
+
+function Survey({ onSubmit }) {
+  const [rating, setRating] = React.useState(0);
+  const [hover, setHover] = React.useState(0);
+  const [comment, setComment] = React.useState("");
+  const [done, setDone] = React.useState(false);
+  if (done) return <div className="thankyou"><h2>Thank you for your feedback!</h2></div>;
+  return (
+    <form className="form-section" onSubmit={e => { e.preventDefault(); setDone(true); onSubmit(); }}>
+      <h3>How was your experience?</h3>
+      <div className="star-rating" style={{textAlign:'center', marginBottom:'1.5rem'}}>
+        {[1,2,3,4,5].map(star => (
+          <span
+            key={star}
+            className={`star ${star <= (hover || rating) ? 'filled' : ''}`}
+            style={{fontSize:'2rem', cursor:'pointer', color: star <= (hover || rating) ? '#ffb400' : '#e0e0e0', transition:'color 0.2s'}}
+            onClick={() => setRating(star)}
+            onMouseEnter={() => setHover(star)}
+            onMouseLeave={() => setHover(0)}
+            aria-label={`Rate ${star} star${star > 1 ? 's' : ''}`}
+          >
+            <i className="fa fa-star"></i>
+          </span>
+        ))}
+      </div>
+      <textarea
+        placeholder="Any comments or suggestions?"
+        value={comment}
+        onChange={e => setComment(e.target.value)}
+        rows={3}
+      />
+      <button type="submit" disabled={rating === 0}>Submit Feedback</button>
+    </form>
+  );
+}
+
+function App() {
+  // Step: 0=browse, 1=cart, 2=info, 3=payment, 4=thankyou, 5=survey
+  const [step, setStep] = React.useState(0);
+  const [filters, setFilters] = React.useState({
+    category: "All",
+    color: "All",
+    material: "All",
+    priceUnder400: false,
+    search: ""
+  });
+  const [cart, setCart] = React.useState([]);
+  const [showCart, setShowCart] = React.useState(false);
+  
+  // Modal state
+  const [modalProduct, setModalProduct] = React.useState(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  // Faceted search
+  const filteredProducts = PRODUCTS.filter(p => {
+    if (filters.category !== "All" && p.category !== filters.category) return false;
+    if (filters.color !== "All" && p.color !== filters.color) return false;
+    if (filters.material !== "All" && p.material !== filters.material) return false;
+    if (filters.priceUnder400 && p.price >= 400) return false;
+    if (filters.search && !p.name.toLowerCase().includes(filters.search.toLowerCase())) return false;
+    return true;
+  });
+
+  // Modal handlers
+  const showProductModal = (product) => {
+    setModalProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalProduct(null);
+  };
+
+  // Cart handlers
+  const addToCart = (productWithOptions) => {
+    const itemKey = `${productWithOptions.id}-${productWithOptions.color}-${productWithOptions.material}`;
+    setCart(c => {
+      const found = c.find(item => `${item.id}-${item.color}-${item.material}` === itemKey);
+      if (found) {
+        return c.map(item => `${item.id}-${item.color}-${item.material}` === itemKey 
+          ? { ...item, qty: item.qty + 1 } 
+          : item
+        );
+      }
+      return [...c, { ...productWithOptions, qty: 1 }];
+    });
+    setShowCart(true);
+    setStep(1);
+  };
+  
+  const removeFromCart = (itemKey) => setCart(c => c.filter(item => `${item.id}-${item.color}-${item.material}` !== itemKey));
+  const changeQty = (itemKey, qty) => setCart(c => c.map(item => `${item.id}-${item.color}-${item.material}` === itemKey ? { ...item, qty } : item));
+
+  // Stepper navigation
+  const goToCart = () => { setShowCart(true); setStep(1); };
+  const goToBrowse = () => { setShowCart(false); setStep(0); };
+
+  // Info, payment, survey
+  const [userInfo, setUserInfo] = React.useState(null);
+  const [paymentInfo, setPaymentInfo] = React.useState(null);
+
+  return (
+    <div>
+      <div className="header">
+        <div className="header-inner">
+          <div className="company">
+            <h1>Chain's Furnitures</h1>
+          </div>
+          <div className="nav">
+            <a className={step===0?"active":""} href="#" onClick={e => {e.preventDefault(); goToBrowse();}}>Shop</a>
+            <a className={step===1?"active":""} href="#" onClick={e => {e.preventDefault(); goToCart();}}>Cart</a>
+            <a className={step===5?"active":""} href="#" onClick={e => {e.preventDefault(); setStep(5);}}>Survey</a>
+            <button className="cart-btn" onClick={goToCart} title="View Cart">
+              <i className="fa fa-shopping-cart"></i>
+              {cart.length > 0 && <span className="cart-count">{cart.reduce((a,b)=>a+b.qty,0)}</span>}
+            </button>
+          </div>
+        </div>
+      </div>
+      {step === 0 && (
+        <div className="sales-banner">
+          <span className="sales-badge">SUMMER SALE</span> Up to <b>30% OFF</b> select items! Shop now and save big on your favorite furniture.
+        </div>
+      )}
+      {(step >= 1 && step <= 4) && <Stepper step={step} />}
+      <div className="container">
+        {step === 0 && (
+          <>
+            <div className="hero-section">
+              <div className="hero-bg"></div>
+              <div className="hero-content">
+                <h2>Welcome to Chain's Furnitures</h2>
+                <p>Discover timeless comfort and modern style. We craft quality furniture to make your house a home.</p>
+                <button className="hero-btn" onClick={() => {
+                  const el = document.getElementById('shop-items');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}>Shop Now</button>
+              </div>
+            </div>
+            <div id="shop-items"></div>
+            <h2 className="section-title">Browse Our Furniture</h2>
+            <Filters filters={filters} setFilters={setFilters} />
+            <ProductList products={filteredProducts} onShowModal={showProductModal} />
+          </>
+        )}
+        {step === 1 && (
+          <>
+            <h2 className="section-title">Your Cart</h2>
+            <Cart cart={cart} onRemove={removeFromCart} onChangeQty={changeQty} />
+            <div className="btn-group">
+              <button onClick={goToBrowse}>Continue Shopping</button>
+              <button disabled={cart.length===0} onClick={()=>setStep(2)}>Checkout</button>
+            </div>
+          </>
+        )}
+        {step === 2 && (
+          <InfoForm onNext={info => { setUserInfo(info); setStep(3); }} />
+        )}
+        {step === 3 && (
+          <PaymentForm onNext={pay => { setPaymentInfo(pay); setCart([]); setStep(4); }} />
+        )}
+        {step === 4 && (
+          <ThankYou onNext={() => setStep(5)} />
+        )}
+        {step === 5 && (
+          <Survey onSubmit={() => setTimeout(goToBrowse, 1500)} />
+        )}
+      </div>
+      
+      <ProductModal 
+        product={modalProduct}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onAddToCart={addToCart}
+      />
+      
+      <div className="footer">
+        <div className="footer-inner">
+          <div className="footer-col company">
+            <h2>Chain's Furnitures</h2>
+            <p style={{marginTop:8, color:'#e0e0e0'}}>Quality furniture for every space. Crafted with care, delivered with pride.</p>
+          </div>
+          <div className="footer-col links">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#" onClick={e=>{e.preventDefault();goToBrowse();}}>Shop</a></li>
+              <li><a href="#" onClick={e=>{e.preventDefault();goToCart();}}>Cart</a></li>
+              <li><a href="#" onClick={e=>{e.preventDefault();setStep(5);}}>Survey</a></li>
+            </ul>
+          </div>
+          <div className="footer-col contact">
+            <h4>Contact</h4>
+            <ul>
+              <li><i className="fa fa-envelope"></i> support@chainsfurnitures.com</li>
+              <li><i className="fa fa-phone"></i> (555) 123-4567</li>
+              <li><i className="fa fa-map-marker-alt"></i> 123 Main St, City, Country</li>
+            </ul>
+          </div>
+          <div className="footer-col social">
+            <h4>Follow Us</h4>
+            <div className="footer-social-icons">
+              <a href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+              <a href="#" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
+              <a href="#" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          &copy; {new Date().getFullYear()} Chain's Furnitures. All rights reserved.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
